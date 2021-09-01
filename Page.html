@@ -3,18 +3,23 @@
 <script>
 const auctionsurl = "https://api.hypixel.net/skyblock/auctions"
 async function refreshdata(){
-await fetch(auctionsurl).then((res) => {
-res.json().then(data => {
-    window.data = data
-    console.log("Fetch Complete")
-    console.log(data)
-    for (i = 0; i < data.auctions.length; i++) {
-        console.log("Name: " + data.auctions[i]["item_name"] + " - Starting Price: " + data.auctions[i]["starting_bid"])
-        console.log("index: " + i)
-        console.log("Bin: " + data.auctions[i]["type"])
-    }
-})
-})
+    await fetch(auctionsurl).then((res) => {
+        res.json().then(data => {
+            window.data = data
+            console.log("Fetch Complete")
+            console.log(data)
+            for (i = 0; i < data.auctions.length; i++) {
+                console.log("Name: " + data.auctions[i]["item_name"] + " - Starting Price: " + data.auctions[i]["starting_bid"])
+                console.log("index: " + i)
+                if (data.auctions[i]["bin"]) {
+                    console.log("Bin: " + data.auctions[i]["bin"])
+                }
+                else {
+                    console.log("Bin: False")
+                }
+            }
+        })
+    })
 }
 
 refreshdata()
