@@ -1,0 +1,33 @@
+<title>Skyblock Caller</title>
+
+<script>
+const auctionsurl = "https://api.hypixel.net/skyblock/auctions"
+async function refreshdata(){
+await fetch(auctionsurl).then((res) => {
+res.json().then(data => {
+    window.data = data
+    console.log("Fetch Complete")
+    console.log(data)
+    for (i = 0; i < data.auctions.length; i++) {
+        console.log("Name: " + data.auctions[i]["item_name"] + " - Starting Price: " + data.auctions[i]["starting_bid"])
+        console.log("index: " + i)
+        console.log("Bin: " + data.auctions[i]["type"])
+    }
+})
+})
+}
+
+refreshdata()
+
+</script>
+
+<style>
+     div {width: 100%; height: 100%; background-color:darkslateblue; }
+    div {position: absolute; top: 0; left: 0;}
+</style>
+
+<body>
+<div>
+
+</div>
+</body>
