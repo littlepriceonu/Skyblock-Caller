@@ -22,6 +22,11 @@ async function refreshdata(){
     })
 }
 
+window.getauction = (index) => {
+    console.log(window.data.auctions[index])
+    console.log("/viewauction " + window.data.auctions[index]["uuid"])
+}
+
 refreshdata()
 
 </script>
