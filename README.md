@@ -6,4 +6,4 @@ So far its all put in console
 
 Thinking About Making This A Flipper With Extra Stuff For Free :)
 
-### So Far This Is Just Displays All Flips
+So Far This Is Just Displays All Flips
