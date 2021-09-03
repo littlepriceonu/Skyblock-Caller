@@ -2,73 +2,100 @@
 
 
 <style>
-     div {width: 100%; height: 100%; background-color:darkslateblue; }
-    div {position: absolute; top: 0; left: 0;}
+    div {width: 100%; height: 100%; background-color:darkslateblue; position: absolute; top: 0; left: 0;}
 </style>
 
 <body>
 <div>
-    <h3 id="text"></h1>
+    <h3 id="text"></h3>
     <input type="button" id="button" value="Next Auction"></input>
+    <input id="jumpto" placeholder="Jump To"></input>
+    <input id ="jumptobutton" type="button" value="Jump"></input>
+    <input id="authkey"> </input>
 </div>
 </body>
 
 <script>
 
-    window.startfetch = (authkey) => {
-        const auctionsurl = "https://api.hypixel.net/skyblock/auctions?key="+authkey
-        async function refreshdata(){
-            await fetch(auctionsurl).then((res) => {
-                res.json().then(data => {
-                    window.data = data
-                    console.log("Fetch Complete")
-                    console.log(data)
-                    for (i = 0; i < data.auctions.length; i++) {
-                        console.log("Name: " + data.auctions[i]["item_name"] + " - Starting Price: " + data.auctions[i]["starting_bid"])
-                        console.log("index: " + i)
-                        if (data.auctions[i]["bin"]) {
-                            console.log("Bin: " + data.auctions[i]["bin"])
-                        }
-                        else {
-                            console.log("Bin: False")
-                        }
+window.startfetch = (authkey) => {
+    const auctionsurl = "https://api.hypixel.net/skyblock/auctions?key="+authkey
+    async function refreshdata(){
+        await fetch(auctionsurl).then((res) => {
+            res.json().then(data => {
+                window.data = data
+                console.log("Fetch Complete")
+                console.log(data)
+                for (i = 0; i < data.auctions.length; i++) {
+                    console.log("Name: " + data.auctions[i]["item_name"] + " - Starting Price: " + data.auctions[i]["starting_bid"])
+                    console.log("index: " + i)
+                    if (data.auctions[i]["bin"]) {
+                        console.log("Bin: " + data.auctions[i]["bin"])
                     }
-                })
+                    else {
+                        console.log("Bin: False")
+                    }
+                }
             })
-        }
-        refreshdata()
+        })
     }
-    
-    window.getauction = (index) => {
-        console.log(window.data.auctions[index])
-        console.log("/viewauction " + window.data.auctions[index]["uuid"])
-    }
-    
-    var nextpage = document.getElementById("button");
-    
-    var text = document.getElementById("text");
-    
-    var index = 0
-    
-    
-    if (!window.data) {
-        text.innerHTML = "Please GoTo Console and execute startfetch('Your hypixel /api auth key here') (Press Next auction to bring up auction"
-    }
+    refreshdata()
+}
 
-    nextpage.onclick = () => {
-        if (!window.data) {
-            text.innerHTML = "Please GoTo Console and execute startfetch('Your hypixel /api auth key here') (Press Next auction to bring up auction"
+window.getauction = (index) => {
+    console.log(window.data.auctions[index])
+    console.log("/viewauction " + window.data.auctions[index]["uuid"])
+}
+
+var authkey = document.getElementById("authkey")
+
+var nextpage = document.getElementById("button");
+
+var jumptobutton = document.getElementById("jumptobutton")
+
+var jumpto = document.getElementById("jumpto")
+
+var text = document.getElementById("text");
+
+var index = 0
+
+
+
+if (!window.data) {
+    jumpto.style.display = "none";
+    jumptobutton.style.display = "none";
+    text.innerHTML = "Please Put Your hypixel /api auth key in the text input"
+}
+
+jumptobutton.onclick = () => {
+    index = parseInt(jumpto.value)-1
+    nextpage.click()
+}
+
+nextpage.onclick = () => {
+    if (!window.data) {
+        if (!authkey.value == "") {
+            window.startfetch(authkey.value)
+            authkey.remove()
+            text.innerHTML = "Please Click Next Auction"
+            jumpto.style.display = "block";
+            jumptobutton.style.display = "block";
+        }
+        else  {
+            text.innerHTML = "Please Put Your hypixel /api auth key in the text input"
+        }
+    }
+    else {
+        jumpto.style.display = "block";
+        jumptobutton.style.display = "block";
+        index += 1
+        text.innerHTML = "index: " + index + " - " + "Name: " + window.data.auctions[index]["item_name"] + " - Starting Price: " + window.data.auctions[index]["starting_bid"] 
+        if (data.auctions[index]["bin"]) {
+            text.innerHTML = text.innerHTML + " - Bin: " + data.auctions[index]["bin"]
         }
         else {
-            index += 1
-            text.innerHTML = "index: " + index + " - " + "Name: " + window.data.auctions[index]["item_name"] + " - Starting Price: " + window.data.auctions[index]["starting_bid"] 
-            if (data.auctions[index]["bin"]) {
-                text.innerHTML = text.innerHTML + " - Bin: " + data.auctions[index]["bin"]
-            }
-            else {
-                text.innerHTML = text.innerHTML + " - Bin: False"
-            }
+            text.innerHTML = text.innerHTML + " - Bin: False"
         }
     }
-    
+}
+
 </script>
