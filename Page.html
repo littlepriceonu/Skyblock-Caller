@@ -2,16 +2,34 @@
 
 
 <style>
-    div {width: 100%; height: 100%; background-color:darkslateblue; position: absolute; top: 0; left: 0;}
+    div {
+        width: 100%; 
+        height: 100%; 
+        background-color:darkslateblue; 
+        position: absolute; 
+        top: 0; 
+        left: 0;
+    }
+
+    .textinput{
+        background-color: darkmagenta;
+        color: black;
+    }
+    
+    .buttoninput {
+        background-color: darkmagenta;
+        color: black;
+    }
 </style>
 
 <body>
 <div>
     <h3 id="text"></h3>
-    <input type="button" id="button" value="Next Auction"></input>
-    <input id="jumpto" placeholder="Jump To"></input>
-    <input id ="jumptobutton" type="button" value="Jump"></input>
-    <input id="authkey"> </input>
+    <input type="button" id="button" value="Next Auction" class="buttoninput"></input>
+    <input id="jumpto" placeholder="Jump To" class="textinput"></input>
+    <input id ="jumptobutton" type="button" value="Jump" class="buttoninput"></input>
+    <input id ="copybutton" type="button" value="Copy" class="buttoninput"></input>
+    <input id="authkey" class="textinput"></input>
 </div>
 </body>
 
@@ -56,11 +74,14 @@ var jumpto = document.getElementById("jumpto")
 
 var text = document.getElementById("text");
 
+var copy = document.getElementById("copybutton")
+
 var index = 0
 
 
 
 if (!window.data) {
+    copy.style.display = "none";
     jumpto.style.display = "none";
     jumptobutton.style.display = "none";
     text.innerHTML = "Please Put Your hypixel /api auth key in the text input"
@@ -79,6 +100,7 @@ nextpage.onclick = () => {
             text.innerHTML = "Please Click Next Auction"
             jumpto.style.display = "block";
             jumptobutton.style.display = "block";
+            copy.style.display = "block";
         }
         else  {
             text.innerHTML = "Please Put Your hypixel /api auth key in the text input"
@@ -87,6 +109,7 @@ nextpage.onclick = () => {
     else {
         jumpto.style.display = "block";
         jumptobutton.style.display = "block";
+        copy.style.display = "block";
         index += 1
         text.innerHTML = "index: " + index + " - " + "Name: " + window.data.auctions[index]["item_name"] + " - Starting Price: " + window.data.auctions[index]["starting_bid"] 
         if (data.auctions[index]["bin"]) {
@@ -95,6 +118,24 @@ nextpage.onclick = () => {
         else {
             text.innerHTML = text.innerHTML + " - Bin: False"
         }
+    }
+}
+
+copy.onclick = () => {
+    text.focus();
+    if (!document.hasFocus()) {
+        var old = text.innerHTML
+        text.innerHTML = "/viewauction " + window.data.auctions[index]["uuid"]
+        var range = document.createRange()
+        range.selectNodeContents(text)
+        window.getSelection().removeAllRanges()
+        window.getSelection().addRange(range)
+        document.execCommand('copy');
+        window.getSelection().removeAllRanges()
+        text.innerHTML = old
+    }
+    else {
+        navigator.clipboard.writeText("/viewauction " + window.data.auctions[index]["uuid"])
     }
 }
 
