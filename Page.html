@@ -14,22 +14,32 @@
     .textinput{
         background-color: darkmagenta;
         color: black;
+        position: relative;
     }
     
     .buttoninput {
         background-color: darkmagenta;
         color: black;
+        position: relative;
+    }
+
+    .userInputs{
+        position: relative;
+        top: 20px;
+        left: 20px;
     }
 </style>
 
 <body>
 <div>
     <h3 id="text"></h3>
-    <input type="button" id="button" value="Next Auction" class="buttoninput"></input>
-    <input id="jumpto" placeholder="Jump To" class="textinput"></input>
-    <input id ="jumptobutton" type="button" value="Jump" class="buttoninput"></input>
-    <input id ="copybutton" type="button" value="Copy" class="buttoninput"></input>
-    <input id="authkey" class="textinput"></input>
+    <div class="userInputs">
+        <input type="button" id="button" value="Next Auction" class="buttoninput"></input>
+        <input id="jumpto" placeholder="Jump To" class="textinput"></input>
+        <input id ="jumptobutton" type="button" value="Jump" class="buttoninput"></input>
+        <input id ="copybutton" type="button" value="Copy" class="buttoninput"></input>
+        <input id="authkey" class="textinput"></input>
+    </div>
 </div>
 </body>
 
@@ -118,6 +128,8 @@ nextpage.onclick = () => {
         else {
             text.innerHTML = text.innerHTML + " - Bin: False"
         }
+        var date = new Date(data.auctions[index].end);
+        text.innerHTML += " - End: " + date.toLocaleString();
     }
 }
 
